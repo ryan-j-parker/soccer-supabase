@@ -3,44 +3,47 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsI
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/*
-assumptions you can make:
 
-The table name in supabase is `games`
+//assumptions you can make:
 
-The games are stored in the database using this data model:
-{
-   name1: ,
-   name2: ,
-   score1: ,
-   score2: ,
-}
-*/
+//The table name in supabase is `games`
 
-export async function createGame(game){
+//The games are stored in the database using this data model:
+
+//const games =
+//{
+ //   name1: name1,
+  //  name2: name2,
+  //  score1: score1,
+//    score2: score2,
+//};
+
+
+export async function createGame(game) {
     // create a single new game in the games table using the above object
-    /*const game = {
-        name1: name1.textContent,
-        name2: name2.textContent,
-        score1: score1.textContent,
-        score2: score2.textContent
-    }
-    */
-    const response = await client.from('games').insert(game);
+    
+  //  const newGame = {
+   //     name1: name1,
+    //    name2: name2,
+    //    score1: score1,
+   //     score2: score2,
+ //   };
 
-    if (response.error) {
-        throw new Error(response.error.message);
+    const resp = await client.from('games').insert(game);
+    console.log('resp', resp);
+    if (resp.error) {
+        throw new Error(resp.error.message);
     }
-    return response.game;
-    //return checkError(response);
+    return resp.game;
+//    return checkError(response);
 }
 
 export async function getGames() {
     // select all games from the games table
-    const response = await client.from('games').select('*');
+    const resp = await client.from('games').select('*');
 
 
-    return checkError(response);    
+    return checkError(resp);
 }
 
 export async function getUser() {
@@ -51,7 +54,7 @@ export async function getUser() {
 export async function checkAuth() {
     const user = await getUser();
 
-    if (!user) location.replace('../'); 
+    if (!user) location.replace('../');
 }
 
 export async function redirectToGames() {
@@ -60,13 +63,13 @@ export async function redirectToGames() {
     }
 }
 
-export async function signupUser(email, password){
+export async function signupUser(email, password) {
     const response = await client.auth.signUp({ email, password });
-    
+
     return response.user;
 }
 
-export async function signInUser(email, password){
+export async function signInUser(email, password) {
     const response = await client.auth.signIn({ email, password });
 
     return response.user;
